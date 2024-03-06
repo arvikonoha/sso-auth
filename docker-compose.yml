@@ -1,0 +1,14 @@
+services:
+  mongodb:
+    image: mongo:6.0.13
+    restart: always
+    ports:
+      - '27013:27017'
+    volumes:
+      - ./db-dumps/mongo/data:/data/db
+    
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
