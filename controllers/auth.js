@@ -13,8 +13,8 @@ module.exports.register = async function register(req, res){
         const salt = await bcrypt.genSalt(12)
         const hashedPassword = await bcrypt.hash(password, salt)
         const response = await orm.user.create({username, password: hashedPassword})
-        const token = jwt.sign({id: response._id}, PRIVATE_KEY, {algorithm: 'RS256'})
-        return res.json({token, user: {name: response.username, sub: response._id}})
+        const token = jwt.sign({sub: response._id}, PRIVATE_KEY, {algorithm: 'RS256'})
+        return res.json({token, user: {name: response.username, _id: response._id}})
     } catch (error) {
         return res.status(500).json({error: 'Internal server error'})
     }
@@ -28,7 +28,7 @@ module.exports.login = async function login(req, res){
         const isValid = await bcrypt.compare(password, existingUser.password)
         if (!isValid) return res.status(401).json({error: 'Invalid credentials'})
         const token = jwt.sign({sub: existingUser._id}, PRIVATE_KEY, {algorithm: 'RS256', expiresIn: 1200000 })
-        return res.json({token})
+        return res.json({token, user: {name: response.username, _id: response._id}})
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'Internal server error'})
