@@ -14,7 +14,7 @@ module.exports.register = async function register(req, res){
         const hashedPassword = await bcrypt.hash(password, salt)
         const response = await orm.user.create({name, password: hashedPassword})
         const token = jwt.sign({sub: response._id}, PRIVATE_KEY, {algorithm: 'RS256'})
-        return res.json({token, user: {name: response.username, _id: response._id}})
+        return res.json({token, user: {name: response.name, _id: response._id}})
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'Internal server error'})

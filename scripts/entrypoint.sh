@@ -1,5 +1,4 @@
-
-
+#!/bin/sh
 # Check if variables.sh exists
 if [ -f ./scripts/variables.sh ]; then
     # Source the variables from the file

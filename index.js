@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-console.log(process.env.MONGO_URI)
 mongoose.connect(`${process.env.MONGO_URI}/commonauth`).then(() => {
     console.log('Mongoose connected successfully')
 }).catch(error => console.log(error))
